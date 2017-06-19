@@ -16,7 +16,7 @@ app.get('/', function (req, res){
 
 app.post('/generate', function (req, res){
   console.log('Generate route hit...');
-  console.log(req);
+  console.log(req.body.Body);
   res.send('<h1>Generating resume!</h1>');
 });
 
