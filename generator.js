@@ -6,7 +6,7 @@ var app = express();
 //PDF DEPENDENCIES
 var pdfkit = require('pdfkit');
 
-app.use(express.json());
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res){
   console.log('Root route hit...');
@@ -14,9 +14,9 @@ app.get('/', function (req, res){
   res.send('<h1>This is a server!</h1>');
 });
 
-app.get('/generate', function (req, res){
+app.post('/generate', function (req, res){
   console.log('Generate route hit...');
-
+  console.log(req);
   res.send('<h1>Generating resume!</h1>');
 });
 
