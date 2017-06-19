@@ -3,10 +3,13 @@ var PORT = process.env.PORT || 3000;
 var express = require('express');
 var app = express();
 
+var bodyParser = require('body-parser');
+
 //PDF DEPENDENCIES
 var pdfkit = require('pdfkit');
 
-app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({extended: false}));
+//app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res){
   console.log('Root route hit...');
