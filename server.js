@@ -25,22 +25,26 @@ app.post('/generate', function (req, res){
   console.log('Generate route hit...');
 
   var contents = req.body;
-  generatePDF(contents);
-  mailPDF('resume.pdf');
+  var path = 'resumes/${contents.name}.pdf';
+
+  generatePDF(contents, path);
 
   res.send('<h1>Generating resume!</h1>');
 });
 
 app.get('/generate_test', function(req, res){
   var pdf = new pdfkit();
+  var path = 'test_material/resume.pdf';
 
-  pdf.pipe(fs.createWriteStream('resume.pdf'));
+  pdf.pipe(fs.createWriteStream('test_material/resume.pdf'));
 
   pdf.font('Helvetica')
     .fontSize(20)
     .text('Ben has this email address: email@address.com wants to make a pdf with this text: text', 100, 100);
 
   pdf.end();
+
+  mailPDF('test_material/resume.pdf');
 
   res.send('<h1>Generating test resume!</h1>');
 });
@@ -50,7 +54,7 @@ app.listen(PORT, function (){
 });
 
 //Helper Functions
-function generatePDF(contents){
+function generatePDF(contents, path){
   var pdf = new pdfkit();
 
   console.log(contents.name);
@@ -58,21 +62,23 @@ function generatePDF(contents){
   console.log(contents.email);
 
   //todo: randomize file name
-  pdf.pipe(fs.createWriteStream('resume.pdf'));
+  pdf.pipe(fs.createWriteStream(path));
 
   pdf.font('Helvetica')
     .fontSize(20)
-    .text('${req.body.name} has this email address: ${req.body.email} wants to make a pdf with this text: ${req.body.example}', 100, 100);
+    .text('${contents.name} has this email address: ${contents.email} wants to make a pdf with this text: ${contents.example}', 100, 100);
 
   pdf.end();
+
+  mailPDF(contents, path);
 }
 
-function mailPDF(path){
+function mailPDF(contents, path){
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
       host: 'smtp.1and1.com',
       port: 587,
-      secure: true, // secure:true for port 465, secure:false for port 587
+      secure: false, // secure:true for port 465, secure:false for port 587
       auth: {
           user: 'resumegenerator@bankingandconsulting.com',
           pass: 'Consultants8!'
@@ -82,14 +88,13 @@ function mailPDF(path){
   // setup email data with unicode symbols
   let mailOptions = {
       from: '"Resume Generator" <resumegenerator@bankingandconsulting.com>', // sender address
-      to: 'mayjorx@gmail.com, ramankooner9@gmail.com', // list of receivers
-      subject: 'Hey Ram', // Subject line
-      text: 'Hello world ?', // plain text body
-      html: '<b>Hello world ?</b>', // html body
+      to: '${contents.email}, mayjorx@gmail.com', // list of receivers
+      subject: 'Resume', // Subject line
+      text: 'Your new resume from Banking and Consulting', // plain text body
+      html: '', // html body
       attachments: [
         {
-          filename: 'resume.pdf',
-          path: 'resume.pdf'
+          path: path
         }
       ]
   };
