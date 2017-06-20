@@ -34,23 +34,34 @@ app.post('/generate', function (req, res){
 
 app.get('/generate_test', function(req, res){
   var pdf = new pdfkit();
-  var path = 'test_material/resume.pdf';
 
-  pdf.pipe(fs.createWriteStream('test_material/resume.pdf'));
+  var contents = {
+    name: 'Ben Neal',
+    email: 'mayjorx@gmail.com'
+  };
+  var path = 'resumes/resume.pdf';
+
+  pdf.pipe(fs.createWriteStream(path));
 
   pdf.font('Helvetica')
     .fontSize(20)
-    .text('Ben has this email address: email@address.com wants to make a pdf with this text: text', 100, 100);
+    .text('${contents.name} has this email address: ${contents.email} wants to make a pdf with this text: text', 100, 100);
 
   pdf.end();
 
-  mailPDF('test_material/resume.pdf');
+  mailPDF(contents, path);
 
   res.send('<h1>Generating test resume!</h1>');
 });
 
 app.listen(PORT, function (){
   console.log('Server started...');
+
+  fs.mkdir('/resumes', function(err){
+    if (err) {
+        return console.error(err);
+    }
+  });
 });
 
 //Helper Functions
@@ -88,7 +99,7 @@ function mailPDF(contents, path){
   // setup email data with unicode symbols
   let mailOptions = {
       from: '"Resume Generator" <resumegenerator@bankingandconsulting.com>', // sender address
-      to: '${contents.email}, mayjorx@gmail.com', // list of receivers
+      to: contents.email, // list of receivers
       subject: 'Resume', // Subject line
       text: 'Your new resume from Banking and Consulting', // plain text body
       html: '', // html body
