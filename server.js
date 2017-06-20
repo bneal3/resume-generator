@@ -53,9 +53,9 @@ app.listen(PORT, function (){
 function generatePDF(contents){
   var pdf = new pdfkit();
 
-  console.log(req.body.name);
-  console.log(req.body.example);
-  console.log(req.body.email);
+  console.log(contents.name);
+  console.log(contents.example);
+  console.log(contents.email);
 
   //todo: randomize file name
   pdf.pipe(fs.createWriteStream('resume.pdf'));
@@ -82,7 +82,7 @@ function mailPDF(path){
   // setup email data with unicode symbols
   let mailOptions = {
       from: '"Resume Generator" <resumegenerator@bankingandconsulting.com>', // sender address
-      to: 'ramankooner9@gmail.com', // list of receivers
+      to: 'mayjorx@gmail.com, ramankooner9@gmail.com', // list of receivers
       subject: 'Hey Ram', // Subject line
       text: 'Hello world ?', // plain text body
       html: '<b>Hello world ?</b>', // html body
