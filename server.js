@@ -39,7 +39,7 @@ app.get('/generate_test', function(req, res){
     name: 'Ben Neal',
     email: 'mayjorx@gmail.com'
   };
-  var path = 'resumes/resume.pdf';
+  var path = 'test_material/resume.pdf';
 
   pdf.pipe(fs.createWriteStream(path));
 
@@ -56,12 +56,6 @@ app.get('/generate_test', function(req, res){
 
 app.listen(PORT, function (){
   console.log('Server started...');
-
-  fs.mkdir('/resumes', function(err){
-    if (err) {
-        return console.error(err);
-    }
-  });
 });
 
 //Helper Functions
