@@ -26,6 +26,7 @@ app.post('/generate', function (req, res){
 
   var contents = req.body;
   generatePDF(contents);
+  mailPDF('resume.pdf');
 
   res.send('<h1>Generating resume!</h1>');
 });
