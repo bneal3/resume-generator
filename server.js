@@ -45,7 +45,7 @@ app.get('/generate_test', function(req, res){
 
   pdf.font('Helvetica')
     .fontSize(20)
-    .text(contents.name + 'has this email address: ' + contents.email + ' wants to make a pdf with this text: text', 100, 100);
+    .text(contents.name + ' has this email address: ' + contents.email + ' and wants to make a pdf with this text: text', 100, 100);
 
   pdf.end();
 
@@ -71,7 +71,7 @@ function generatePDF(contents, path){
 
   pdf.font('Helvetica')
     .fontSize(20)
-    .text(contents.name + 'has this email address: ' + contents.email + ' wants to make a pdf with this text: '
+    .text(contents.name + ' has this email address: ' + contents.email + ' and wants to make a pdf with this text: '
       + contents.example, 100, 100);
 
   pdf.end();
