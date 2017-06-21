@@ -12,6 +12,10 @@ var fs = require('fs');
 //MAIL DEPENDENCIES
 var nodemailer = require('nodemailer');
 
+var config = require("./secrets.js");
+var emailAddress = process.env.EMAIL_ADDRESS || config.emailAddress;
+var emailPassword = process.env.EMAIL_PASSWORD || config.emailPassword;
+
 app.use(bodyParser.urlencoded({extended: false}));
 //app.use(express.static(__dirname + '/public'));
 
@@ -86,14 +90,14 @@ function mailPDF(contents, path){
       port: 587,
       secure: false, // secure:true for port 465, secure:false for port 587
       auth: {
-          user: 'resumegenerator@bankingandconsulting.com',
-          pass: 'Consultants8!'
+          user: emailAddress,
+          pass: emailPassword
       }
   });
 
   // setup email data with unicode symbols
   let mailOptions = {
-      from: '"Resume Generator" <resumegenerator@bankingandconsulting.com>', // sender address
+      from: '"Resume Generator" <' + emailAddress + '>', // sender address
       to: contents.email, // list of receivers
       subject: 'Resume', // Subject line
       text: 'Your new resume from Banking and Consulting', // plain text body
