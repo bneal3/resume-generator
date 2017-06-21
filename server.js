@@ -25,7 +25,7 @@ app.post('/generate', function (req, res){
   console.log('Generate route hit...');
 
   var contents = req.body;
-  var path = 'resumes/${contents.name}.pdf';
+  var path = 'resumes/' + contents.name + '.pdf';
 
   generatePDF(contents, path);
 
@@ -45,7 +45,7 @@ app.get('/generate_test', function(req, res){
 
   pdf.font('Helvetica')
     .fontSize(20)
-    .text('${contents.name} has this email address: ${contents.email} wants to make a pdf with this text: text', 100, 100);
+    .text(contents.name + 'has this email address: ' + contents.email + ' wants to make a pdf with this text: text', 100, 100);
 
   pdf.end();
 
@@ -71,7 +71,8 @@ function generatePDF(contents, path){
 
   pdf.font('Helvetica')
     .fontSize(20)
-    .text('${contents.name} has this email address: ${contents.email} wants to make a pdf with this text: ${contents.example}', 100, 100);
+    .text(contents.name + 'has this email address: ' + contents.email + ' wants to make a pdf with this text: '
+      + contents.example, 100, 100);
 
   pdf.end();
 

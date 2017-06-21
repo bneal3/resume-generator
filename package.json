@@ -1,6 +1,9 @@
 {
   "name": "resume-generator",
   "version": "1.0.0",
+  "engines": {
+    "node": "6.10.3"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
