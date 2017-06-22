@@ -1,4 +1,5 @@
 //SERVER DEPENDENCIES
+var production = process.env.PORT;
 var PORT = process.env.PORT || 3000;
 var express = require('express');
 var app = express();
@@ -12,7 +13,7 @@ var fs = require('fs');
 //MAIL DEPENDENCIES
 var nodemailer = require('nodemailer');
 
-var config = require("./secrets.js");
+var config = production || require("./secrets.js");
 var emailAddress = process.env.EMAIL_ADDRESS || config.emailAddress;
 var emailPassword = process.env.EMAIL_PASSWORD || config.emailPassword;
 
@@ -37,23 +38,16 @@ app.post('/generate', function (req, res){
 });
 
 app.get('/generate_test', function(req, res){
-  var pdf = new pdfkit();
+  console.log('Generate test route hit...');
 
   var contents = {
     name: 'Ben Neal',
+    example: 'Example text',
     email: 'mayjorx@gmail.com'
   };
   var path = 'test_material/resume.pdf';
 
-  pdf.pipe(fs.createWriteStream(path));
-
-  pdf.font('Helvetica')
-    .fontSize(20)
-    .text(contents.name + ' has this email address: ' + contents.email + ' and wants to make a pdf with this text: text', 100, 100);
-
-  pdf.end();
-
-  mailPDF(contents, path);
+  generatePDF(contents, path);
 
   res.send('<h1>Generating test resume!</h1>');
 });
