@@ -11,7 +11,7 @@ var pdfkit = require('pdfkit');
 var fs = require('fs');
 
 //MAIL DEPENDENCIES
-var nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer'); 
 
 var config = production || require("./secrets.js");
 var emailAddress = process.env.EMAIL_ADDRESS || config.emailAddress;
